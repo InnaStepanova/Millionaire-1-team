@@ -9,21 +9,21 @@
 /* Begin PBXBuildFile section */
 		028B324A2991018F00273E22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028B32492991018F00273E22 /* AppDelegate.swift */; };
 		028B324C2991018F00273E22 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028B324B2991018F00273E22 /* SceneDelegate.swift */; };
-		028B324E2991018F00273E22 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028B324D2991018F00273E22 /* ViewController.swift */; };
-		028B32512991018F00273E22 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 028B324F2991018F00273E22 /* Main.storyboard */; };
 		028B32532991019500273E22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 028B32522991019500273E22 /* Assets.xcassets */; };
 		028B32562991019500273E22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 028B32542991019500273E22 /* LaunchScreen.storyboard */; };
+		2842FA44299112570042235F /* RulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2842FA43299112570042235F /* RulesViewController.swift */; };
+		2842FA4829911BEA0042235F /* RulesText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2842FA4729911BEA0042235F /* RulesText.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		028B32462991018F00273E22 /* Millionaire 1 team.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Millionaire 1 team.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		028B32492991018F00273E22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		028B324B2991018F00273E22 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		028B324D2991018F00273E22 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		028B32502991018F00273E22 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		028B32522991019500273E22 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		028B32552991019500273E22 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		028B32572991019500273E22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2842FA43299112570042235F /* RulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesViewController.swift; sourceTree = "<group>"; };
+		2842FA4729911BEA0042235F /* RulesText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesText.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,8 +58,8 @@
 			children = (
 				028B32492991018F00273E22 /* AppDelegate.swift */,
 				028B324B2991018F00273E22 /* SceneDelegate.swift */,
-				028B324D2991018F00273E22 /* ViewController.swift */,
-				028B324F2991018F00273E22 /* Main.storyboard */,
+				2842FA43299112570042235F /* RulesViewController.swift */,
+				2842FA4729911BEA0042235F /* RulesText.swift */,
 				028B32522991019500273E22 /* Assets.xcassets */,
 				028B32542991019500273E22 /* LaunchScreen.storyboard */,
 				028B32572991019500273E22 /* Info.plist */,
@@ -127,7 +127,6 @@
 			files = (
 				028B32562991019500273E22 /* LaunchScreen.storyboard in Resources */,
 				028B32532991019500273E22 /* Assets.xcassets in Resources */,
-				028B32512991018F00273E22 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +137,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				028B324E2991018F00273E22 /* ViewController.swift in Sources */,
 				028B324A2991018F00273E22 /* AppDelegate.swift in Sources */,
+				2842FA44299112570042235F /* RulesViewController.swift in Sources */,
 				028B324C2991018F00273E22 /* SceneDelegate.swift in Sources */,
+				2842FA4829911BEA0042235F /* RulesText.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		028B324F2991018F00273E22 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				028B32502991018F00273E22 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		028B32542991019500273E22 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -291,9 +283,9 @@
 				INFOPLIST_FILE = "Millionaire 1 team/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -301,9 +293,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "InnaStepanova.Millionaire-1-team";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -318,9 +313,9 @@
 				INFOPLIST_FILE = "Millionaire 1 team/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,9 +323,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "InnaStepanova.Millionaire-1-team";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
