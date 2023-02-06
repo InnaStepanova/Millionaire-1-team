@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GameViewController: UIViewController {
+final class GameViewController: UIViewController {
     
     private enum Constants {
         static let standartTrailingIndentation: CGFloat = -20
@@ -24,7 +24,7 @@ class GameViewController: UIViewController {
                  "friendCall": "forbiddenFriendCall",
                  "everyoneHelp": "forbiddenEveryoneHelp"]
     
-    let backgroundImageView = UIImageView(image: UIImage(named: "backgroundView"))
+    let backgroundImageView = UIImageView(image: UIImage(named: "background"))
     
     let questionView = QuestionView()
             
