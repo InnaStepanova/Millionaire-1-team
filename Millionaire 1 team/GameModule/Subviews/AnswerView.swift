@@ -62,6 +62,7 @@ final class AnswerView: UIView {
         return gradientLayer
     }()
     
+    @available(iOS 14.0, *)
     func configure(with bodyAnswer: String, _ answerOption: String, _ action: UIAction) {
         option = answerOption
         title = bodyAnswer

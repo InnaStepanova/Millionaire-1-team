@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 14.0, *)
 final class GameViewController: UIViewController {
     
     private enum Constants {
@@ -53,6 +54,7 @@ final class GameViewController: UIViewController {
 
     }
     
+    @available(iOS 14.0, *)
     private func configureAnswersStackView() {
         answers.forEach {
             let answerView = AnswerView()
@@ -63,6 +65,7 @@ final class GameViewController: UIViewController {
         }
     }
     
+    @available(iOS 14.0, *)
     private func configureHintsStackView() {
         for (key, value) in hints {
             let hintButton = UIButton(type: .system)
