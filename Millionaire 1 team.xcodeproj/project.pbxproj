@@ -13,6 +13,7 @@
 		028B32562991019500273E22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 028B32542991019500273E22 /* LaunchScreen.storyboard */; };
 		2842FA44299112570042235F /* RulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2842FA43299112570042235F /* RulesViewController.swift */; };
 		2842FA4829911BEA0042235F /* RulesText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2842FA4729911BEA0042235F /* RulesText.swift */; };
+		A800F8CB299245560035FD0B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A800F8CA299245560035FD0B /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		028B32572991019500273E22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2842FA43299112570042235F /* RulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesViewController.swift; sourceTree = "<group>"; };
 		2842FA4729911BEA0042235F /* RulesText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesText.swift; sourceTree = "<group>"; };
+		A800F8CA299245560035FD0B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				028B32492991018F00273E22 /* AppDelegate.swift */,
 				028B324B2991018F00273E22 /* SceneDelegate.swift */,
+				A800F8CA299245560035FD0B /* MainViewController.swift */,
 				2842FA43299112570042235F /* RulesViewController.swift */,
 				2842FA4729911BEA0042235F /* RulesText.swift */,
 				028B32522991019500273E22 /* Assets.xcassets */,
@@ -141,6 +144,7 @@
 				2842FA44299112570042235F /* RulesViewController.swift in Sources */,
 				028B324C2991018F00273E22 /* SceneDelegate.swift in Sources */,
 				2842FA4829911BEA0042235F /* RulesText.swift in Sources */,
+				A800F8CB299245560035FD0B /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
