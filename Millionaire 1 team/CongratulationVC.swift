@@ -8,6 +8,7 @@
 import UIKit
 
 class CongratulationVC : UIViewController {
+    
     let backgroundView: UIImageView = {
             let myView = UIImageView()
             let image = UIImage(named: "Frame")
