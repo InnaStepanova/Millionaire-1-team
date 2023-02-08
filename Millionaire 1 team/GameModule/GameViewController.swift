@@ -12,7 +12,7 @@ import AVFoundation
 final class GameViewController: UIViewController {
     
     enum SoundType: String {
-        case backgroundSound, chosenAnswer, win, lose, winGame, timerForResponse
+        case backgroundSound, chosenAnswer, win, lose, winGame
     }
     
     private let questions = Question.getQuestions()
@@ -20,8 +20,6 @@ final class GameViewController: UIViewController {
     private var levelsCounter = 1
     
     private var player: AVAudioPlayer?
-    
-    private var timer = Timer()
     
     private enum Constants {
         static let winTimeInterval: TimeInterval = 3.5
@@ -41,11 +39,6 @@ final class GameViewController: UIViewController {
     private let backgroundImageView = UIImageView(image: Resourses.Images.bacgroundImage)
     
     private let questionView = QuestionView()
-    
-    private let progressBar: UIProgressView = {
-        let progress = UIProgressView()
-        return progress
-    }()
             
     private var answersStackView: UIStackView = {
         let stackView = UIStackView()
@@ -97,7 +90,6 @@ final class GameViewController: UIViewController {
     }
     
     private func isRight(userAnswer: String, correctAnswer: String) -> Bool {
-        timer.invalidate()
         if userAnswer == correctAnswer {
             playSound(type: .win)
             
@@ -120,7 +112,6 @@ final class GameViewController: UIViewController {
     private func updateUI(with questionLevel: Int) {
         let levelQuestions = getAllLevelQuestion()
         guard let questionNumber = levelQuestions.first?.level else {
-            timer.invalidate()
             playSound(type: .winGame)
             print("You're win!")
             return
@@ -132,8 +123,7 @@ final class GameViewController: UIViewController {
         
         questionView.configure(with: question.ask, questionNumber, priceQuestion)
         configureAnswersStackView(with: allAnswers, question.correctAnswer)
-        playSound(type: .timerForResponse)
-        timerForResponse()
+        playSound(type: .backgroundSound)
     }
     
     private func cleanAnswers() {
@@ -188,31 +178,14 @@ final class GameViewController: UIViewController {
             }), for: .touchUpInside)
             hintsStackView.addArrangedSubview(hintButton)
         }
-        
-    }
-    
-    private func timerForResponse() {
-        progressBar.progress = 0
-        var time: Float = 30
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
-            if time > 0 {
-                time -= 1
-                self.progressBar.progress = 1 - time/30
-            } else {
-                self.timer.invalidate()
-                self.playSound(type: .lose)
-                // добавить функцию перехода на экран поражения с задержкой 4 секунды
-            }
-        })
+
     }
     
     private func setupUI() {
         let subviews = [backgroundImageView,
                         questionView,
                         answersStackView,
-                        hintsStackView,
-                        progressBar]
+                        hintsStackView]
         
         subviews.forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -244,13 +217,7 @@ final class GameViewController: UIViewController {
             hintsStackView.topAnchor.constraint(equalTo: answersStackView.bottomAnchor),
             hintsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.standartLeadingIndentation),
             hintsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.standartTrailingIndentation),
-            hintsStackView.bottomAnchor.constraint(equalTo: progressBar.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            progressBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-            progressBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
-            progressBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            hintsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
