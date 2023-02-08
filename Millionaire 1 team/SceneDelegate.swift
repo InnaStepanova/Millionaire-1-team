@@ -18,7 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = MainViewController()
+        if #available(iOS 14.0, *) {
+            window?.rootViewController = MainViewController()
+        } else {
+            // Fallback on earlier versions
+        }
         window?.makeKeyAndVisible()
     }
 

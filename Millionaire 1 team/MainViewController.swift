@@ -2,6 +2,7 @@
 
 import UIKit
 
+@available(iOS 14.0, *)
 class MainViewController: UIViewController {
     
     let backgroundView: UIImageView = {
@@ -57,9 +58,10 @@ class MainViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Rules of the Game", for: .normal)
         button.tintColor = #colorLiteral(red: 0.4352941176, green: 0.9294117647, blue: 0.8392156863, alpha: 1)
-//        button.backgroundColor = #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)
+        //        button.backgroundColor = #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)
         button.titleLabel?.font = UIFont(name: "Avenir Next Bold", size: 35)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         return button
     }()
     
@@ -71,16 +73,42 @@ class MainViewController: UIViewController {
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont(name: "Avenir Next Bold", size: 50)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(startGame), for: .touchUpInside)
         return button
     }()
+    
+    @objc private func startGame() {
+        let rootVC = GameViewController()
+        let navVC = UINavigationController(rootViewController: rootVC)
+        navVC.modalPresentationStyle = .fullScreen
+        present(navVC, animated: true)
+    }
+    
+    @objc private func didTapButton() {
+        let rootVC = RulesViewController()
+        rootVC.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "< Back", style: .plain, target: self, action: #selector(dismissSelf)
+        )
 
+        rootVC.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.yellow, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 30.0)], for: .normal)
+        
+        
+        let navVC = UINavigationController(rootViewController: rootVC)
+        navVC.modalPresentationStyle = .fullScreen
+        present(navVC, animated: true)
+    }
+    
+    @objc private func dismissSelf() {
+        dismiss(animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupView()
         setConstraints()
-
     }
+    
+
     
     func setupView() {
         view.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
@@ -92,12 +120,14 @@ class MainViewController: UIViewController {
         view.addSubview(rulesButton)
         view.addSubview(startButton)
     }
-
+    
 }
 
+@available(iOS 14.0, *)
 extension MainViewController {
     
     func setConstraints() {
+        
         NSLayoutConstraint.activate([
             backgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
@@ -129,9 +159,6 @@ extension MainViewController {
             startButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
             startButton.heightAnchor.constraint(equalToConstant: 60),
             
-            
-        
-        
         ])
     }
 }
