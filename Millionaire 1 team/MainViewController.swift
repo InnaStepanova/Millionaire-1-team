@@ -90,8 +90,6 @@ class MainViewController: UIViewController {
             title: "< Back", style: .plain, target: self, action: #selector(dismissSelf)
         )
 
-
-
         rootVC.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.yellow, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 30.0)], for: .normal)
         
         
@@ -129,6 +127,7 @@ class MainViewController: UIViewController {
 extension MainViewController {
     
     func setConstraints() {
+        
         NSLayoutConstraint.activate([
             backgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
@@ -159,9 +158,6 @@ extension MainViewController {
             startButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
             startButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
             startButton.heightAnchor.constraint(equalToConstant: 60),
-            
-            
-            
             
         ])
     }

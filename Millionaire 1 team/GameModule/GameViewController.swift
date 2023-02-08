@@ -23,6 +23,8 @@ final class GameViewController: UIViewController {
     
     private var timer = Timer()
     
+    private var question: Question!
+    
     private enum Constants {
         static let winTimeInterval: TimeInterval = 3.5
         static let chosenTime: TimeInterval = 2
@@ -126,7 +128,7 @@ final class GameViewController: UIViewController {
             return
         }
         
-        let question = levelQuestions[Int.random(in: 0..<levelQuestions.count)]
+        question = levelQuestions[Int.random(in: 0..<levelQuestions.count)]
         let allAnswers = question.getAllAnswers()
         let priceQuestion = question.getPrice()
         
@@ -178,14 +180,34 @@ final class GameViewController: UIViewController {
             hintButton.setImage(UIImage(named: value)?.withRenderingMode(.alwaysOriginal), for: .selected)
             hintButton.imageView?.contentMode = .scaleAspectFit
             hintButton.tintColor = .clear
-            hintButton.addAction(UIAction(handler: { _ in
-                if !hintButton.isSelected {
-                    hintButton.isSelected.toggle()
-                    print(#function)
-                } else {
-                    print("Hint used already")
-                }
-            }), for: .touchUpInside)
+            if key == "fiftyOnFifty" {
+                hintButton.addAction(UIAction(handler: { _ in
+                    if !hintButton.isSelected {
+                        hintButton.isSelected.toggle()
+                        self.fiftyOnFifty()
+                    } else {
+                        print("Hint used already")
+                    }
+                }), for: .touchUpInside)
+            } else if key == "friendCall" {
+                hintButton.addAction(UIAction(handler: { _ in
+                    if !hintButton.isSelected {
+                        hintButton.isSelected.toggle()
+                        self.friendCall()
+                    } else {
+                        print("Hint used already")
+                    }
+                }), for: .touchUpInside)
+            } else {
+                hintButton.addAction(UIAction(handler: { _ in
+                    if !hintButton.isSelected {
+                        hintButton.isSelected.toggle()
+                        self.everyoneHelp()
+                    } else {
+                        print("Hint used already")
+                    }
+                }), for: .touchUpInside)
+            }
             hintsStackView.addArrangedSubview(hintButton)
         }
         
@@ -205,6 +227,48 @@ final class GameViewController: UIViewController {
                 // добавить функцию перехода на экран поражения с задержкой 4 секунды
             }
         })
+    }
+    
+    private func everyoneHelp() {
+        if Int.random(in: 1...10) <= 7 {
+            let alert = UIAlertController(title: "Everyone help", message: question.correctAnswer, preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true)
+        } else {
+            let alert = UIAlertController(title: "Everyone help", message: self.question.wrongAnswers[Int.random(in: 0...question.wrongAnswers.count - 1)], preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true)
+        }
+    }
+    
+    private func friendCall() {
+        if Int.random(in: 1...10) <= 8 {
+            let alert = UIAlertController(title: "Call a friend", message: question.correctAnswer, preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true)
+        } else {
+            let alert = UIAlertController(title: "Call a friend", message: self.question.wrongAnswers[Int.random(in: 0...question.wrongAnswers.count - 1)], preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true)
+        }
+    }
+    
+    private func fiftyOnFifty() {
+        var buff : [AnswerView] = []
+        answersStackView.arrangedSubviews.forEach {
+            let a = $0 as! AnswerView
+            if a.title != question.correctAnswer {
+                buff.append(a)
+            }
+        }
+        buff.shuffle()
+        buff.remove(at: 0).fiftyOnFiftySetup()
+        buff.remove(at: 0).fiftyOnFiftySetup()
+        question.wrongAnswers = [buff[0].title]
     }
     
     private func setupUI() {
