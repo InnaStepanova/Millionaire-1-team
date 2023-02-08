@@ -48,7 +48,7 @@ class RulesViewController: UIViewController {
     func setupRulesTextView() {
         rulesTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         rulesTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        rulesTextView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+        rulesTextView.topAnchor.constraint(equalTo: view.topAnchor, constant: 90).isActive = true
         rulesTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
     }
     
