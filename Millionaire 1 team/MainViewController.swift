@@ -62,7 +62,6 @@ class MainViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "Avenir Next Bold", size: 35)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        
         return button
     }()
     
@@ -87,18 +86,14 @@ class MainViewController: UIViewController {
     
     @objc private func didTapButton() {
         let rootVC = RulesViewController()
-
         rootVC.navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "< Back", style: .plain, target: self, action: #selector(dismissSelf)
         )
 
 
-//        let font: UIFont = UIFont.systemFont(ofSize: 30.0)
-//        let textAttributes: [NSAttributedString.Key: Any] = [.font: font]
-//
-//        rootVC.navigationItem.leftBarButtonItem?.setTitleTextAttributes(textAttributes, for: .normal)
-//        rootVC.navigationItem.leftBarButtonItem?.setTitleTextAttributes(textAttributes, for: .selected)
-//        rootVC.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.red], for: .normal)
+
+        rootVC.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.yellow, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 30.0)], for: .normal)
+        
         
         let navVC = UINavigationController(rootViewController: rootVC)
         navVC.modalPresentationStyle = .fullScreen
@@ -111,11 +106,11 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupView()
         setConstraints()
-        
     }
+    
+
     
     func setupView() {
         view.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
