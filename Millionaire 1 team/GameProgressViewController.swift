@@ -36,7 +36,9 @@ extension PrizeTable {
 
 class GameProgressViewController: UIViewController {
     
-    private var currentQuestion = 1
+    var currentQuestion = 1
+    var winningAmount = 0
+    
     private var prizeTable = PrizeTable.getPrizeTable()
     
     private let millionaireImage: UIImageView = {
@@ -45,19 +47,21 @@ class GameProgressViewController: UIViewController {
         return imageView
     }()
     
-    private let nextQuestinButton: UIButton = {
+    private lazy var nextQuestinButton: UIButton = {
         let button = UIButton()
         button.setTitle("Next Question", for: .normal)
         button.layer.cornerRadius = 20
         button.backgroundColor = .blue
+        button.addTarget(self, action: #selector(nextQuestionButtonPressed), for: .touchUpInside)
         return button
     }()
     
-    private let takeMoneyButton: UIButton = {
+    private lazy var takeMoneyButton: UIButton = {
         let button = UIButton()
         button.setTitle("Take My Money", for: .normal)
         button.layer.cornerRadius = 20
         button.backgroundColor = .red
+        button.addTarget(self, action: #selector(takeMoneyButtonPressed), for: .touchUpInside)
         return button
     }()
     
@@ -80,6 +84,28 @@ class GameProgressViewController: UIViewController {
         addViews()
         getStackView()
         layoutViews()
+        winningAmount = getWinningAmount(currentQuestion: currentQuestion)
+    }
+    
+    @objc private func nextQuestionButtonPressed() {
+        dismiss(animated: true)
+    }
+    
+    @objc private func takeMoneyButtonPressed() {
+
+        let congratulationVC = CongratulationVC()
+        congratulationVC.changeAmount("\(winningAmount)")
+        congratulationVC.modalPresentationStyle = .fullScreen
+        present(congratulationVC, animated: true)
+        
+    }
+    
+    private func getWinningAmount(currentQuestion: Int) -> Int {
+        var summ = 0
+        for i in 0...currentQuestion - 1 {
+            summ += prizeTable[14 - i].winningSumm
+        }
+        return summ
     }
 }
 
@@ -124,8 +150,13 @@ private extension GameProgressViewController {
     
     private func getStackView() {
         for prize in prizeTable {
-            let questionImage = ProgressImage(questionNumber: "Вопрос \(prize.qwestionNumber)", winningSumm: "\(prize.winningSumm) RUB", colorImage: prize.color)
-            progressImageStackView.addArrangedSubview(questionImage)
+            if prize.qwestionNumber <= currentQuestion {
+                let questionImage = ProgressImage(questionNumber: "Вопрос \(prize.qwestionNumber)", winningSumm: "\(prize.winningSumm) RUB", colorImage: .green)
+                progressImageStackView.addArrangedSubview(questionImage)
+            } else {
+                let questionImage = ProgressImage(questionNumber: "Вопрос \(prize.qwestionNumber)", winningSumm: "\(prize.winningSumm) RUB", colorImage: prize.color)
+                progressImageStackView.addArrangedSubview(questionImage)
+            }
         }
     }
 }
