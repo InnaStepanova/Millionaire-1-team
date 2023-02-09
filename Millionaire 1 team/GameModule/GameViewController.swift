@@ -19,6 +19,7 @@ final class GameViewController: UIViewController {
         case fiftyOnFifty
         case friendCall
         case everyoneHelp
+        case makeMistake
     }
     
     private enum Constants {
@@ -190,6 +191,9 @@ final class GameViewController: UIViewController {
         case "everyoneHelp":
             !sender.isSelected ? everyoneHelp() : print("Hint used already")
             
+        case "makeMistake":
+            !sender.isSelected ? print(#function) : print("Hint used already")
+            
         default:
             break
         }
@@ -217,6 +221,9 @@ final class GameViewController: UIViewController {
                                     for: .selected)
             case .everyoneHelp:
                 hintButton.setImage(UIImage(named: "forbiddenEveryoneHelp")?.withRenderingMode(.alwaysOriginal),
+                                    for: .selected)
+            case .makeMistake:
+                hintButton.setImage(UIImage(named: "forbiddenMakeMistake")?.withRenderingMode(.alwaysOriginal),
                                     for: .selected)
             }
             hintsStackView.addArrangedSubview(hintButton)
