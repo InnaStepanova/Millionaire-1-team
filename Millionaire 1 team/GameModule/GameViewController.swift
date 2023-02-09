@@ -43,7 +43,8 @@ final class GameViewController: UIViewController {
     private var isGameOver: Bool = false {
         didSet {
             if isGameOver {
-                guard let price = currentQuestion?.getPrice() else { return }
+                guard let currentQuestion = currentQuestion else { return }
+                let price = currentQuestion.getPrice(with: currentQuestion.level - 1)
                 timer.invalidate()
                 let vc = GameOverViewController(score: price)
                 vc.delegate = self
@@ -141,7 +142,7 @@ final class GameViewController: UIViewController {
         
         questionView.configure(with: currentQuestion.ask,
                                currentQuestion.level,
-                               currentQuestion.getPrice())
+                               currentQuestion.getPrice(with: currentQuestion.level))
         
         configureAnswersStackView(with: currentQuestion.getAllAnswers(),
                                   currentQuestion.correctAnswer)

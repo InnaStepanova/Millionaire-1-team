@@ -36,40 +36,40 @@ struct Question: Decodable {
         return allAnswers
     }
     
-    func getPrice() -> Int {
+    func getPrice(with level: Int) -> Int {
         switch level {
         case 1:
-            return 0
-        case 2:
             return 100
-        case 3:
+        case 2:
             return 200
-        case 4:
+        case 3:
             return 300
-        case 5:
+        case 4:
             return 500
-        case 6:
+        case 5:
             return 1000
-        case 7:
+        case 6:
             return 2000
-        case 8:
+        case 7:
             return 4000
+        case 8:
+            return 8000
         case 9:
-            return 8_000
-        case 10:
             return 16_000
-        case 11:
+        case 10:
             return 32_000
-        case 12:
+        case 11:
             return 64_000
-        case 13:
+        case 12:
             return 125_000
-        case 14:
+        case 13:
             return 250_000
-        case 15:
+        case 14:
             return 500_000
-        default:
+        case 15:
             return 1_000_000
+        default:
+            return 0
         }
     }
 }
