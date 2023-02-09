@@ -20,12 +20,12 @@ final class GameOverViewController: UIViewController {
         static let standartLeadingIndentation: CGFloat = 20
         static let stackViewSpacing: CGFloat = 20
         static let stackViewHeight: CGFloat = 100
+        static let logoInmageViewLeadindIndetation: CGFloat = 100
+        static let logoInmageViewTrailingIndetation: CGFloat = -100
         
         static let textColor: UIColor = .white
     }
-    
-    private let score: Int
-    
+        
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = Constants.textColor
@@ -36,45 +36,19 @@ final class GameOverViewController: UIViewController {
     
     private lazy var restartButton: GradientButton  = {
         let button = GradientButton(type: .system)
-        button.setImage(UIImage(systemName: "gobackward"), for: .normal)
+        button.setTitle("Новая игра", for: .normal)
         button.tintColor = Constants.textColor
         button.addTarget(self, action: #selector(restartButtonPressed), for: .touchUpInside)
         return button
     }()
-
-    private lazy var scoreButton = {
-        let button = GradientButton(type: .system)
-        button.setImage(UIImage(systemName: "list.bullet.rectangle"), for: .normal)
-        button.tintColor = Constants.textColor
-        button.addTarget(self, action: #selector(scoreButtonPressed), for: .touchUpInside)
-        button.setTitle("Score", for: .normal)
-        return button
-    }()
     
     private let backgroundImageView = UIImageView(image: Resourses.Images.bacgroundImage)
-    
-    private lazy var buttonsStackView = {
-        let stackView = UIStackView(arrangedSubviews: [scoreButton, restartButton])
-        stackView.dropShadow()
-        stackView.distribution = .fillProportionally
-        stackView.spacing = Constants.stackViewSpacing
-        return stackView
-    }()
     
     private let logoImageView = {
         let imageView = UIImageView(image: Resourses.Images.millioneireImage)
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-    
-    init(score: Int) {
-        self.score = score
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,16 +60,12 @@ final class GameOverViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    @objc private func scoreButtonPressed() {
-        print(#function)
-    }
-    
     private func setupUI() {
         
         titleLabel.text = """
-Игра окончена.
-Твой выигрыш:
-\(score) рублей
+Игра только началась
+и уже окончена.
+Попробуй еще раз.
 """
         
         UIView.animate(withDuration: 0.3, delay: 0.1, options: [.repeat, .autoreverse]) {
@@ -104,7 +74,7 @@ final class GameOverViewController: UIViewController {
         
         let subviews = [backgroundImageView,
                         titleLabel,
-                        buttonsStackView,
+                        restartButton,
                         logoImageView
         ]
         
@@ -121,10 +91,10 @@ final class GameOverViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            buttonsStackView.heightAnchor.constraint(equalToConstant: Constants.stackViewHeight),
-            buttonsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.standartLeadingIndentation),
-            buttonsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.standartTrailingIndentation),
-            buttonsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            restartButton.heightAnchor.constraint(equalToConstant: Constants.stackViewHeight),
+            restartButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.standartLeadingIndentation),
+            restartButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.standartTrailingIndentation),
+            restartButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
@@ -135,8 +105,8 @@ final class GameOverViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            logoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 100),
-            logoImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -100),
+            logoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.logoInmageViewLeadindIndetation),
+            logoImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.standartTrailingIndentation)
         ])
     }
 }

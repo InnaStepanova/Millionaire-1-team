@@ -42,6 +42,7 @@ class GameProgressViewController: UIViewController {
     
     var currentQuestion = 1
     var winningAmount = 0
+    
     private lazy var answerStatus: AnswerStatus = .right
     
     private var prizeTable = PrizeTable.getPrizeTable()
@@ -96,6 +97,16 @@ class GameProgressViewController: UIViewController {
         return stack
     }()
     
+    init(currentQuestion: Int = 1,
+         winningAmount: Int = 0) {
+        self.currentQuestion = currentQuestion
+        self.winningAmount = winningAmount
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

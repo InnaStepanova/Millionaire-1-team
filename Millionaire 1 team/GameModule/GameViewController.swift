@@ -45,14 +45,8 @@ final class GameViewController: UIViewController {
     private var isGameOver: Bool = false {
         didSet {
             if isGameOver {
-                guard let currentQuestion = currentQuestion else { return }
-                let price = currentQuestion.getPrice(with: currentQuestion.level - 1)
+                showGameProcess()
                 timer.invalidate()
-                let vc = GameOverViewController(score: price)
-                vc.modalPresentationStyle = .fullScreen
-                vc.delegate = self
-                present(vc, animated: true)
-
             } else {
                 cleanAnswers()
                 cleanHints()
@@ -129,6 +123,23 @@ final class GameViewController: UIViewController {
         }
     }
     
+    private func showGameProcess() {
+        guard let currentQuestion = currentQuestion else { return }
+        let level = currentQuestion.level - 1
+        let price = currentQuestion.getPrice(with: currentQuestion.level - 1)
+        if level == 0 {
+            let vc = GameOverViewController()
+            vc.modalPresentationStyle = .fullScreen
+            vc.delegate = self
+            present(vc, animated: true)
+        } else {
+            let vc = GameProgressViewController(currentQuestion: level,
+                                                winningAmount: price)
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: true)
+        }
+    }
+    
     private func updateUI(with questionLevel: Int) {
         currentQuestion = gameManager.getCurrentQuestion()
         gameOverTime = 30
@@ -137,6 +148,7 @@ final class GameViewController: UIViewController {
         
         guard let currentQuestion = currentQuestion else {
             timer.invalidate()
+            showGameProcess()
             gameManager.playSound(type: .winGame)
             return
         }
