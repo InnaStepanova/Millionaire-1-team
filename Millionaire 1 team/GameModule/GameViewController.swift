@@ -58,6 +58,7 @@ final class GameViewController: UIViewController {
                 guard let price = currentQuestion?.getPrice() else { return }
                 timer.invalidate()
                 let vc = GameOverViewController(title: "You are lose.", score: price)
+                vc.modalPresentationStyle = .fullScreen
                 vc.delegate = self
                 present(vc, animated: true)
 
@@ -254,7 +255,7 @@ final class GameViewController: UIViewController {
     }
     
     private func everyoneHelp() {
-        guard var currentQuestion = currentQuestion else { return }
+        guard let currentQuestion = currentQuestion else { return }
         if Int.random(in: 1...10) <= 7 {
             let alert = UIAlertController(title: "Everyone help", message: currentQuestion.correctAnswer, preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
