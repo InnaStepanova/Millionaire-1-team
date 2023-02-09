@@ -227,6 +227,25 @@ final class GameViewController: UIViewController {
         })
     }
     
+    private func showGameProcessTrueAnswer() { // эта функция вызывается когда был дан верный ответ
+        guard let currentQuestion = currentQuestion?.level else {return}
+        let vc = GameProgressViewController()
+        vc.modalPresentationStyle = .fullScreen
+        vc.currentQuestion = currentQuestion
+        vc.answerStatus = .right
+        present(vc, animated: true)
+    }
+    
+    private func showGameProcessWrongAnswer() { // эта функция вызывается в случае неверного ответа
+        guard let currentQuestion = currentQuestion?.level else {return}
+        let vc = GameProgressViewController()
+        vc.modalPresentationStyle = .fullScreen
+        vc.currentQuestion = currentQuestion
+        vc.answerStatus = .wrong
+        present(vc, animated: true)
+    }
+    
+    
     private func delayGameOver() {
         guard let answersViews = answersStackView.arrangedSubviews as? [AnswerView] else { return }
         answersViews.forEach {

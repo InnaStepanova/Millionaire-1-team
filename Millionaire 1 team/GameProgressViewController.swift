@@ -42,7 +42,7 @@ class GameProgressViewController: UIViewController {
     
     var currentQuestion = 1
     var winningAmount = 0
-    private lazy var answerStatus: AnswerStatus = .right
+    var answerStatus: AnswerStatus = .right
     
     private var prizeTable = PrizeTable.getPrizeTable()
     
