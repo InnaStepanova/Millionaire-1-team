@@ -34,6 +34,7 @@ final class AnswerView: GradientButton {
     
     private lazy var optionAnswerLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
         label.textColor = .white
         return label
     }()
