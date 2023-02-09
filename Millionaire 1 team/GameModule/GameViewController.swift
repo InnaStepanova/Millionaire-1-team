@@ -24,6 +24,7 @@ final class GameViewController: UIViewController {
     private enum Constants {
         static let winTimeInterval: TimeInterval = 3.5
         static let chosenTime: TimeInterval = 2
+        static let gameOverRightAnswerTime: TimeInterval = 4
         
         static let standartTrailingIndentation: CGFloat = -20
         static let standartLeadingIndentation: CGFloat = 20
@@ -35,6 +36,7 @@ final class GameViewController: UIViewController {
     private let questions = Question.getQuestions()
     
     private var timer = Timer()
+    private var gameOverTime: CFTimeInterval = 5
     
     private let gameManager = GameManager()
     
@@ -97,14 +99,11 @@ final class GameViewController: UIViewController {
     }
     
     private func configureAnswersStackView(with answers: [String], _ correct: String) {
-        
         answers.forEach {
             let answerView = AnswerView()
             let optionLetter = gameManager.optionsLetters[answersStackView.arrangedSubviews.endIndex]
-            
             answerView.configure(with: $0, optionLetter)
             answerView.delegate = self
-                            
             answersStackView.addArrangedSubview(answerView)
         }
     }
@@ -125,13 +124,14 @@ final class GameViewController: UIViewController {
             
         } else {
             gameManager.playSound(type: .lose)
-            isGameOver = true
+            delayGameOver()
             return false
         }
     }
     
     private func updateUI(with questionLevel: Int) {
         currentQuestion = gameManager.getCurrentQuestion()
+        gameOverTime = 30
         self.hintsStackView.alpha = 1
         self.hintsStackView.isUserInteractionEnabled = true
         
@@ -213,19 +213,30 @@ final class GameViewController: UIViewController {
     
     private func timerForResponse() {
         progressBar.progress = 0
-        var time: Float = 30
         
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [weak self] _ in
             guard let self = self else { return }
-            if time > 0 {
-                time -= 1
-                self.progressBar.progress = 1 - time/30
+            if self.gameOverTime > 0 {
+                self.gameOverTime -= 1
+                self.progressBar.progress = 1 - Float(self.gameOverTime)/30
             } else {
                 self.timer.invalidate()
                 self.gameManager.playSound(type: .lose)
-                self.isGameOver = true
+                self.delayGameOver()
             }
         })
+    }
+    
+    private func delayGameOver() {
+        guard let answersViews = answersStackView.arrangedSubviews as? [AnswerView] else { return }
+        answersViews.forEach {
+            if $0.title == currentQuestion?.correctAnswer {
+                $0.updateGradient(with: true)
+            }
+        }
+        Timer.scheduledTimer(withTimeInterval: Constants.gameOverRightAnswerTime, repeats: false) { _ in
+            self.isGameOver = true
+        }
     }
     
     private func everyoneHelp() {
