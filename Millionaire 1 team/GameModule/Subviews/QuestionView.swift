@@ -44,6 +44,7 @@ final class QuestionView: UIView {
     private lazy var bottomStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [numberQuestionLabel,
                                                        priceQuestionLabel])
+        stackView.distribution = .equalSpacing
         return stackView
     }()
     
@@ -59,7 +60,7 @@ final class QuestionView: UIView {
     func configure(with question: String, _ questionNumber: Int, _ price: Int) {
         questionLabel.text = question
         numberQuestionLabel.text = "Question \(questionNumber)"
-        priceQuestionLabel.text = "\(price) RUB"
+        priceQuestionLabel.text = "Current score: \(price) RUB"
     }
     
     private func setupUI() {

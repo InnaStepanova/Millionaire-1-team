@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol AnswerViewDelegate: AnyObject {
+    func answerButtonTapped(with userAnswer: String, answerView: AnswerView)
+}
+
 final class AnswerView: GradientButton {
+    
+    weak var delegate: AnswerViewDelegate?
     
     private enum Constants {
         static let leadingIndentation: CGFloat = 20
@@ -48,17 +54,9 @@ final class AnswerView: GradientButton {
         optionAnswerLabel.text = option
         answerButton.setTitle(title, for: .normal)
     }
-        
-    @available(iOS 14.0, *)
-    func configure(with bodyAnswer: String, _ answerOption: String, _ action: UIAction) {
-        option = answerOption
-        title = bodyAnswer
-        answerButton.addAction(action, for: .touchUpInside)
-    }
     
-    func fiftyOnFiftySetup() {
-        self.alpha = 0.5
-        answerButton.isEnabled = false
+    @objc private func answerButtonTapped(_ sender: UIButton) {
+        delegate?.answerButtonTapped(with: title, answerView: self)
     }
     
     func updateGradient(with isRight: Bool) {
@@ -72,7 +70,17 @@ final class AnswerView: GradientButton {
     func updateGradientChosenAnswer() {
         gradientLayer.colors = [#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1), #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)].map { $0.cgColor }
     }
+        
+    func configure(with bodyAnswer: String, _ answerOption: String) {
+        option = answerOption
+        title = bodyAnswer
+        answerButton.addTarget(self, action: #selector(answerButtonTapped), for: .touchUpInside)
+    }
     
+    func fiftyOnFiftySetup() {
+        self.alpha = 0.5
+        answerButton.isEnabled = false
+    }
     
     private func setupUI() {
         let subviews = [optionAnswerLabel, answerButton]
