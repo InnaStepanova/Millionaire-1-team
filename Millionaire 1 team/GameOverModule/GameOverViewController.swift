@@ -106,7 +106,7 @@ final class GameOverViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             logoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.logoInmageViewLeadindIndetation),
-            logoImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.standartTrailingIndentation)
+            logoImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.logoInmageViewTrailingIndetation)
         ])
     }
 }
