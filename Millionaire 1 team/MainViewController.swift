@@ -2,7 +2,6 @@
 
 import UIKit
 
-@available(iOS 14.0, *)
 class MainViewController: UIViewController {
     
     let backgroundView: UIImageView = {
@@ -123,7 +122,6 @@ class MainViewController: UIViewController {
     
 }
 
-@available(iOS 14.0, *)
 extension MainViewController {
     
     func setConstraints() {

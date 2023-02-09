@@ -44,6 +44,7 @@ final class QuestionView: UIView {
     private lazy var bottomStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [numberQuestionLabel,
                                                        priceQuestionLabel])
+        stackView.distribution = .equalSpacing
         return stackView
     }()
     

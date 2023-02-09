@@ -36,7 +36,7 @@ struct Question: Decodable {
         return allAnswers
     }
     
-    func getPrice() -> Int {
+    func getPrice(with level: Int) -> Int {
         switch level {
         case 1:
             return 100
