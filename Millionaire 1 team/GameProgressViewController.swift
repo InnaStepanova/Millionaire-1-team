@@ -63,8 +63,10 @@ class GameProgressViewController: UIViewController {
     }()
     
     private lazy var nextQuestinButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.setTitle("Next Question", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Avenir Next Bold", size: 18)
         button.layer.cornerRadius = 20
         button.backgroundColor = .blue
         button.addTarget(self, action: #selector(nextQuestionButtonPressed), for: .touchUpInside)
@@ -72,7 +74,9 @@ class GameProgressViewController: UIViewController {
     }()
     
     private lazy var newGameButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Avenir Next Bold", size: 25)
         button.setTitle("New Game", for: .normal)
         button.layer.cornerRadius = 20
         button.backgroundColor = .blue
@@ -81,8 +85,10 @@ class GameProgressViewController: UIViewController {
     }()
     
     private lazy var takeMoneyButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.setTitle("Take My Money", for: .normal)
+        button.titleLabel?.font = UIFont(name: "Avenir Next Bold", size: 18)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.layer.cornerRadius = 20
         button.backgroundColor = .red
         button.addTarget(self, action: #selector(takeMoneyButtonPressed), for: .touchUpInside)

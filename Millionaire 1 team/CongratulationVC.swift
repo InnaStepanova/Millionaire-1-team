@@ -20,7 +20,7 @@ class CongratulationVC : UIViewController {
     
     let congratulationLabel : UILabel = {
        let label = UILabel()
-        label.text = "Поздравляю, вы выиграли\n1 000 000!"
+        label.text = "Поздравляю, вы выиграли\n1 000 000 рублей!"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.font = UIFont(name: "DIN Condensed", size: 40)
@@ -29,26 +29,63 @@ class CongratulationVC : UIViewController {
         return label
     }()
     
+    private let millionaireImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = Resourses.Images.millioneireImage
+        return imageView
+    }()
+    
+    private lazy var newGameButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("New Game", for: .normal)
+        button.layer.cornerRadius = 20
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Avenir Next Bold", size: 30)
+        button.backgroundColor = .blue
+        button.addTarget(self, action: #selector(newGameButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(backgroundView)
         view.addSubview(congratulationLabel)
+        view.addSubview(millionaireImage)
+        view.addSubview(newGameButton)
         setupUI()
     }
     
     func setupUI() {
-        backgroundView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        backgroundView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        backgroundView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        congratulationLabel.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        congratulationLabel.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        congratulationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        congratulationLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        millionaireImage.translatesAutoresizingMaskIntoConstraints = false
+        newGameButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            millionaireImage.heightAnchor.constraint(equalToConstant: 200),
+            millionaireImage.widthAnchor.constraint(equalToConstant: 200),
+            millionaireImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
+            millionaireImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            congratulationLabel.topAnchor.constraint(equalTo: millionaireImage.bottomAnchor, constant: 50),
+            congratulationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            newGameButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+            newGameButton.heightAnchor.constraint(equalToConstant: 75),
+            newGameButton.widthAnchor.constraint(equalToConstant: 250),
+            newGameButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
     }
     
     func changeAmount(_ amount: String) {
-        congratulationLabel.text = "Поздравляю, вы выиграли\n\(amount)!"
+        congratulationLabel.text = "Поздравляю, вы выиграли\n\(amount) рублей!"
     }
     
+    @objc private func newGameButtonPressed() {
+        dismiss(animated: true)
+    }
 }
