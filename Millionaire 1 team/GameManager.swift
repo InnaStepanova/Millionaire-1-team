@@ -11,6 +11,8 @@ final class GameManager {
     
     let questions = Question.getQuestions()
     
+    let optionsLetters = ["A", "B", "C", "D"]
+
     var levelsCounter = 1
         
     var levelQuestions: [Question] {
