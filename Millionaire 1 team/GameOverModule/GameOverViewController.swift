@@ -24,7 +24,6 @@ final class GameOverViewController: UIViewController {
         static let textColor: UIColor = .white
     }
     
-    private let gameOverTitle: String
     private let score: Int
     
     private let titleLabel: UILabel = {
@@ -68,8 +67,7 @@ final class GameOverViewController: UIViewController {
         return imageView
     }()
     
-    init(title: String, score: Int) {
-        self.gameOverTitle = title
+    init(score: Int) {
         self.score = score
         super.init(nibName: nil, bundle: nil)
     }
@@ -95,9 +93,9 @@ final class GameOverViewController: UIViewController {
     private func setupUI() {
         
         titleLabel.text = """
-\(gameOverTitle)
-Your score:
-\(score)
+Игра окончена.
+Твой выигрыш:
+\(score) рублей
 """
         
         UIView.animate(withDuration: 0.3, delay: 0.1, options: [.repeat, .autoreverse]) {
