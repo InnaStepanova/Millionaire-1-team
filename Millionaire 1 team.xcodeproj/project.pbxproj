@@ -23,6 +23,10 @@
 		65447B5229912CDE00EE1DBD /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65447B5129912CDE00EE1DBD /* UIView+extensions.swift */; };
 		65447B5629912DB900EE1DBD /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65447B5429912DB900EE1DBD /* QuestionView.swift */; };
 		65447B5729912DB900EE1DBD /* AnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65447B5529912DB900EE1DBD /* AnswerView.swift */; };
+		655C340E2994AE5600556EDB /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655C340D2994AE5600556EDB /* GradientButton.swift */; };
+		655C34102994AE5C00556EDB /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655C340F2994AE5C00556EDB /* GradientView.swift */; };
+		655C34122994AE6400556EDB /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655C34112994AE6400556EDB /* GameManager.swift */; };
+		655C34142994AEC500556EDB /* GameOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655C34132994AEC500556EDB /* GameOverViewController.swift */; };
 		658902A82993CD0000C29D26 /* chosenAnswer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 658902A32993CD0000C29D26 /* chosenAnswer.mp3 */; };
 		658902A92993CD0000C29D26 /* win.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 658902A42993CD0000C29D26 /* win.mp3 */; };
 		658902AA2993CD0000C29D26 /* lose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 658902A52993CD0000C29D26 /* lose.mp3 */; };
@@ -51,6 +55,10 @@
 		65447B5129912CDE00EE1DBD /* UIView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extensions.swift"; sourceTree = "<group>"; };
 		65447B5429912DB900EE1DBD /* QuestionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		65447B5529912DB900EE1DBD /* AnswerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswerView.swift; sourceTree = "<group>"; };
+		655C340D2994AE5600556EDB /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GradientButton.swift; path = "../../../../../../.Trash/Millionaire-1-team/Millionaire 1 team/GameModule/GradientButton.swift"; sourceTree = "<group>"; };
+		655C340F2994AE5C00556EDB /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GradientView.swift; path = ../../../../../../GradientView.swift; sourceTree = "<group>"; };
+		655C34112994AE6400556EDB /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameManager.swift; path = "../../../../../.Trash/Millionaire-1-team/Millionaire 1 team/GameManager.swift"; sourceTree = "<group>"; };
+		655C34132994AEC500556EDB /* GameOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverViewController.swift; sourceTree = "<group>"; };
 		658902A32993CD0000C29D26 /* chosenAnswer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chosenAnswer.mp3; sourceTree = "<group>"; };
 		658902A42993CD0000C29D26 /* win.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = win.mp3; sourceTree = "<group>"; };
 		658902A52993CD0000C29D26 /* lose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lose.mp3; sourceTree = "<group>"; };
@@ -101,6 +109,9 @@
 				A800F8CA299245560035FD0B /* MainViewController.swift */,
 				2842FA43299112570042235F /* RulesViewController.swift */,
 				2842FA4729911BEA0042235F /* RulesText.swift */,
+				655C34112994AE6400556EDB /* GameManager.swift */,
+				655C340C2994AE4400556EDB /* ParentViews */,
+				655C340B2994AE3A00556EDB /* GameOverModule */,
 				65447B5929912E2700EE1DBD /* GameModule */,
 				65447B5829912E1800EE1DBD /* Extensions */,
 				028B32522991019500273E22 /* Assets.xcassets */,
@@ -135,6 +146,23 @@
 				028B324D2991018F00273E22 /* GameViewController.swift */,
 			);
 			path = GameModule;
+			sourceTree = "<group>";
+		};
+		655C340B2994AE3A00556EDB /* GameOverModule */ = {
+			isa = PBXGroup;
+			children = (
+				655C34132994AEC500556EDB /* GameOverViewController.swift */,
+			);
+			path = GameOverModule;
+			sourceTree = "<group>";
+		};
+		655C340C2994AE4400556EDB /* ParentViews */ = {
+			isa = PBXGroup;
+			children = (
+				655C340D2994AE5600556EDB /* GradientButton.swift */,
+				655C340F2994AE5C00556EDB /* GradientView.swift */,
+			);
+			path = ParentViews;
 			sourceTree = "<group>";
 		};
 		658902A22993CD0000C29D26 /* Sounds */ = {
@@ -227,16 +255,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				655C34122994AE6400556EDB /* GameManager.swift in Sources */,
 				0284EA702993BF99008137BB /* AppDelegate.swift in Sources */,
 				2842FA44299112570042235F /* RulesViewController.swift in Sources */,
 				65447B5629912DB900EE1DBD /* QuestionView.swift in Sources */,
 				0284EA6F2993BE3F008137BB /* Resourses.swift in Sources */,
 				028B324E2991018F00273E22 /* GameViewController.swift in Sources */,
 				0284EA6B2993BE25008137BB /* ProgressImage.swift in Sources */,
+				655C34102994AE5C00556EDB /* GradientView.swift in Sources */,
+				655C34142994AEC500556EDB /* GameOverViewController.swift in Sources */,
 				65447B5729912DB900EE1DBD /* AnswerView.swift in Sources */,
 				0284EA692993BE17008137BB /* Model.swift in Sources */,
 				65447B5229912CDE00EE1DBD /* UIView+extensions.swift in Sources */,
 				028B324C2991018F00273E22 /* SceneDelegate.swift in Sources */,
+				655C340E2994AE5600556EDB /* GradientButton.swift in Sources */,
 				A35B562C29919312001BF726 /* CongratulationVC.swift in Sources */,
 				2842FA4829911BEA0042235F /* RulesText.swift in Sources */,
 				0284EA672993BDC8008137BB /* GameProgressViewController.swift in Sources */,

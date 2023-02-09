@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AnswerView: UIView {
+final class AnswerView: GradientButton {
     
     private enum Constants {
         static let leadingIndentation: CGFloat = 20
@@ -48,20 +48,7 @@ final class AnswerView: UIView {
         optionAnswerLabel.text = option
         answerButton.setTitle(title, for: .normal)
     }
-    
-    private lazy var gradientLayer: CAGradientLayer = {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.borderColor = UIColor.gray.cgColor
-        gradientLayer.borderWidth = 1
-        let colors: [UIColor] = [#colorLiteral(red: 0.2530327737, green: 0.4159591794, blue: 0.5364745855, alpha: 1), #colorLiteral(red: 0.1300314665, green: 0.2300171852, blue: 0.3798839748, alpha: 1), #colorLiteral(red: 0.2530327737, green: 0.4159591794, blue: 0.5364745855, alpha: 1)]
-        gradientLayer.colors = colors.map { $0.cgColor }
-        gradientLayer.startPoint = CGPoint(x: 0, y: 1)
-        gradientLayer.endPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.cornerRadius = Constants.cornerRadius
-        layer.insertSublayer(gradientLayer, at: 0)
-        return gradientLayer
-    }()
-    
+        
     @available(iOS 14.0, *)
     func configure(with bodyAnswer: String, _ answerOption: String, _ action: UIAction) {
         option = answerOption

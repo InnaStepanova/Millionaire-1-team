@@ -15,16 +15,6 @@ final class GameViewController: UIViewController {
         case backgroundSound, chosenAnswer, win, lose, winGame, timerForResponse
     }
     
-    private let questions = Question.getQuestions()
-    
-    private var levelsCounter = 1
-    
-    private var player: AVAudioPlayer?
-    
-    private var timer = Timer()
-    
-    private var question: Question!
-    
     private enum Constants {
         static let winTimeInterval: TimeInterval = 3.5
         static let chosenTime: TimeInterval = 2
@@ -34,6 +24,40 @@ final class GameViewController: UIViewController {
         static let stackViewSpacing: CGFloat = 10
         static let answersStackViewHeight: CGFloat = 400
         static let questionViewHeight: CGFloat = 150
+    }
+    
+    private let questions = Question.getQuestions()
+    
+    private var levelsCounter = 1
+    
+    private var player: AVAudioPlayer?
+    
+    private var timer = Timer()
+    
+    private let gameManager = GameManager()
+    
+    private var currentQuestion: Question?
+    
+    private var isGameOver: Bool = false {
+        didSet {
+            if isGameOver {
+                guard let price = currentQuestion?.getPrice() else { return }
+                timer.invalidate()
+                let vc = GameOverViewController(title: "You are lose.", score: price)
+                vc.delegate = self
+                present(vc, animated: true)
+                
+
+            } else {
+                cleanAnswers()
+                self.answersStackView.isUserInteractionEnabled = true
+                gameManager.levelsCounter = 1
+                currentQuestion = gameManager.getCurrentQuestion()
+                setupUI()
+                updateUI(with: gameManager.levelsCounter)
+
+            }
+        }
     }
     
     private let hints = ["fiftyOnFifty": "forbiddenFiftyOnFifty",
@@ -67,7 +91,7 @@ final class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUI(with: levelsCounter)
+        updateUI(with: gameManager.levelsCounter)
         configureHintsStackView()
         setupUI()
     }
@@ -106,34 +130,35 @@ final class GameViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + Constants.winTimeInterval) { [weak self] in
                 guard let self = self else { return }
                 self.cleanAnswers()
-                self.updateUI(with: self.levelsCounter)
+                self.updateUI(with: self.gameManager.levelsCounter)
                 self.answersStackView.isUserInteractionEnabled = true
             }
-            levelsCounter += 1
+            gameManager.levelsCounter += 1
             return true
             
         } else {
             playSound(type: .lose)
-            print("Game over")
+            isGameOver = true
             return false
         }
     }
     
     private func updateUI(with questionLevel: Int) {
-        let levelQuestions = getAllLevelQuestion()
-        guard let questionNumber = levelQuestions.first?.level else {
+        currentQuestion = gameManager.getCurrentQuestion()
+        
+        guard let currentQuestion = currentQuestion else {
             timer.invalidate()
             playSound(type: .winGame)
-            print("You're win!")
             return
         }
         
-        question = levelQuestions[Int.random(in: 0..<levelQuestions.count)]
-        let allAnswers = question.getAllAnswers()
-        let priceQuestion = question.getPrice()
+        questionView.configure(with: currentQuestion.ask,
+                               currentQuestion.level,
+                               currentQuestion.getPrice())
         
-        questionView.configure(with: question.ask, questionNumber, priceQuestion)
-        configureAnswersStackView(with: allAnswers, question.correctAnswer)
+        configureAnswersStackView(with: currentQuestion.getAllAnswers(),
+                                  currentQuestion.correctAnswer)
+        
         playSound(type: .timerForResponse)
         timerForResponse()
     }
@@ -143,16 +168,6 @@ final class GameViewController: UIViewController {
             answersStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
-    }
-    
-    private func getAllLevelQuestion() -> [Question] {
-        var questionsLevel = [Question]()
-        questions.forEach {
-            if $0.level == levelsCounter {
-                questionsLevel.append($0)
-            }
-        }
-        return questionsLevel
     }
     
     private func playSound(type: SoundType) {
@@ -230,13 +245,14 @@ final class GameViewController: UIViewController {
     }
     
     private func everyoneHelp() {
+        guard let currentQuestion = currentQuestion else { return }
         if Int.random(in: 1...10) <= 7 {
-            let alert = UIAlertController(title: "Everyone help", message: question.correctAnswer, preferredStyle: .alert)
+            let alert = UIAlertController(title: "Everyone help", message: currentQuestion.correctAnswer, preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(action)
             present(alert, animated: true)
         } else {
-            let alert = UIAlertController(title: "Everyone help", message: self.question.wrongAnswers[Int.random(in: 0...question.wrongAnswers.count - 1)], preferredStyle: .alert)
+            let alert = UIAlertController(title: "Everyone help", message: currentQuestion.wrongAnswers[Int.random(in: 0...currentQuestion.wrongAnswers.count - 1)], preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(action)
             present(alert, animated: true)
@@ -244,13 +260,14 @@ final class GameViewController: UIViewController {
     }
     
     private func friendCall() {
+        guard let currentQuestion = currentQuestion else { return }
         if Int.random(in: 1...10) <= 8 {
-            let alert = UIAlertController(title: "Call a friend", message: question.correctAnswer, preferredStyle: .alert)
+            let alert = UIAlertController(title: "Call a friend", message: currentQuestion.correctAnswer, preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(action)
             present(alert, animated: true)
         } else {
-            let alert = UIAlertController(title: "Call a friend", message: self.question.wrongAnswers[Int.random(in: 0...question.wrongAnswers.count - 1)], preferredStyle: .alert)
+            let alert = UIAlertController(title: "Call a friend", message: currentQuestion.wrongAnswers[Int.random(in: 0...currentQuestion.wrongAnswers.count - 1)], preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(action)
             present(alert, animated: true)
@@ -258,17 +275,18 @@ final class GameViewController: UIViewController {
     }
     
     private func fiftyOnFifty() {
+        guard var currentQuestion = currentQuestion else { return }
         var buff : [AnswerView] = []
         answersStackView.arrangedSubviews.forEach {
             let a = $0 as! AnswerView
-            if a.title != question.correctAnswer {
+            if a.title != currentQuestion.correctAnswer {
                 buff.append(a)
             }
         }
         buff.shuffle()
         buff.remove(at: 0).fiftyOnFiftySetup()
         buff.remove(at: 0).fiftyOnFiftySetup()
-        question.wrongAnswers = [buff[0].title]
+        currentQuestion.wrongAnswers = [buff[0].title]
     }
     
     private func setupUI() {
@@ -319,3 +337,9 @@ final class GameViewController: UIViewController {
     }
 }
 
+@available(iOS 14.0, *)
+extension GameViewController: GameOverViewControllerDelegate {
+    func restartGame(isGameOver: Bool) {
+        self.isGameOver = isGameOver
+    }
+}
