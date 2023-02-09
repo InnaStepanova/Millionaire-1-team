@@ -46,6 +46,7 @@ final class GameViewController: UIViewController {
                 guard let price = currentQuestion?.getPrice() else { return }
                 timer.invalidate()
                 let vc = GameOverViewController(score: price)
+                vc.modalPresentationStyle = .fullScreen
                 vc.delegate = self
                 present(vc, animated: true)
 
