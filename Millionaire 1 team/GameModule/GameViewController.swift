@@ -265,13 +265,14 @@ final class GameViewController: UIViewController {
     }
     
     private func everyoneHelp() {
-        guard let currentQuestion = currentQuestion else { return }
+        guard var currentQuestion = currentQuestion else { return }
         if Int.random(in: 1...10) <= 7 {
             let alert = UIAlertController(title: "Everyone help", message: currentQuestion.correctAnswer, preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(action)
             present(alert, animated: true)
         } else {
+            print(currentQuestion)
             let alert = UIAlertController(title: "Everyone help", message: currentQuestion.wrongAnswers[Int.random(in: 0...currentQuestion.wrongAnswers.count - 1)], preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(action)
@@ -295,7 +296,7 @@ final class GameViewController: UIViewController {
     }
     
     private func fiftyOnFifty() {
-        guard var currentQuestion = currentQuestion else { return }
+        guard let currentQuestion = currentQuestion else { return }
         var buff : [AnswerView] = []
         answersStackView.arrangedSubviews.forEach {
             let a = $0 as! AnswerView
@@ -306,7 +307,7 @@ final class GameViewController: UIViewController {
         buff.shuffle()
         buff.remove(at: 0).fiftyOnFiftySetup()
         buff.remove(at: 0).fiftyOnFiftySetup()
-        currentQuestion.wrongAnswers = [buff[0].title]
+        self.currentQuestion?.wrongAnswers = [buff[0].title]
     }
     
     private func setupUI() {
