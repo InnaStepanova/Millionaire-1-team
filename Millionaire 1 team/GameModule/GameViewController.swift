@@ -107,6 +107,8 @@ final class GameViewController: UIViewController {
             answerView.configure(with: $0, optionLetter, UIAction(handler: { [weak self] _ in
                 guard let self = self else { return }
                 
+                self.hintsStackView.alpha = 0.5
+                
                 self.playSound(type: .chosenAnswer)
                 self.answersStackView.isUserInteractionEnabled = false
                 
@@ -145,6 +147,8 @@ final class GameViewController: UIViewController {
     
     private func updateUI(with questionLevel: Int) {
         currentQuestion = gameManager.getCurrentQuestion()
+        
+        hintsStackView.alpha = 1
         
         guard let currentQuestion = currentQuestion else {
             timer.invalidate()
@@ -197,6 +201,9 @@ final class GameViewController: UIViewController {
             hintButton.tintColor = .clear
             if key == "fiftyOnFifty" {
                 hintButton.addAction(UIAction(handler: { _ in
+                    if self.checkRelevanceHints() {
+                        return
+                    }
                     if !hintButton.isSelected {
                         hintButton.isSelected.toggle()
                         self.fiftyOnFifty()
@@ -206,6 +213,9 @@ final class GameViewController: UIViewController {
                 }), for: .touchUpInside)
             } else if key == "friendCall" {
                 hintButton.addAction(UIAction(handler: { _ in
+                    if self.checkRelevanceHints() {
+                        return
+                    }
                     if !hintButton.isSelected {
                         hintButton.isSelected.toggle()
                         self.friendCall()
@@ -215,6 +225,9 @@ final class GameViewController: UIViewController {
                 }), for: .touchUpInside)
             } else {
                 hintButton.addAction(UIAction(handler: { _ in
+                    if self.checkRelevanceHints() {
+                        return
+                    }
                     if !hintButton.isSelected {
                         hintButton.isSelected.toggle()
                         self.everyoneHelp()
@@ -242,6 +255,13 @@ final class GameViewController: UIViewController {
                 // добавить функцию перехода на экран поражения с задержкой 4 секунды
             }
         })
+    }
+    
+    private func checkRelevanceHints() -> Bool{
+        if hintsStackView.alpha < 1 {
+            return true
+        }
+        return false
     }
     
     private func everyoneHelp() {
