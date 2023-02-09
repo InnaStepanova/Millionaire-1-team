@@ -167,19 +167,23 @@ final class GameViewController: UIViewController {
     }
     
     @objc private func hintPressed(_ sender: UIButton) {
+        
         switch sender.currentTitle {
         case "fiftyOnFifty":
-            !sender.isSelected ? sender.isSelected.toggle() : print("Hint used already")
-            fiftyOnFifty()
+            !sender.isSelected ? fiftyOnFifty() : print("Hint used already")
+            
         case "friendCall":
-            !sender.isSelected ? sender.isSelected.toggle() : print("Hint used already")
-            friendCall()
+            !sender.isSelected ? friendCall() : print("Hint used already")
+         
         case "everyoneHelp":
-            !sender.isSelected ? sender.isSelected.toggle() : print("Hint used already")
-            everyoneHelp()
+            !sender.isSelected ? everyoneHelp() : print("Hint used already")
+            
         default:
             break
         }
+        
+        sender.isSelected.toggle()
+        sender.isUserInteractionEnabled = false
     }
     
     private func configureHintsStackView() {
