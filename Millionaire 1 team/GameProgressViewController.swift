@@ -34,10 +34,15 @@ extension PrizeTable {
     }
 }
 
+enum AnswerStatus {
+    case right
+    case wrong
+}
 class GameProgressViewController: UIViewController {
     
     var currentQuestion = 1
     var winningAmount = 0
+    private lazy var answerStatus: AnswerStatus = .right
     
     private var prizeTable = PrizeTable.getPrizeTable()
     
@@ -47,12 +52,30 @@ class GameProgressViewController: UIViewController {
         return imageView
     }()
     
+    private lazy var messageLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = .boldSystemFont(ofSize: 22)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    
     private lazy var nextQuestinButton: UIButton = {
         let button = UIButton()
         button.setTitle("Next Question", for: .normal)
         button.layer.cornerRadius = 20
         button.backgroundColor = .blue
         button.addTarget(self, action: #selector(nextQuestionButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var newGameButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("New Game", for: .normal)
+        button.layer.cornerRadius = 20
+        button.backgroundColor = .blue
+        button.addTarget(self, action: #selector(newGameButtonPressed), for: .touchUpInside)
         return button
     }()
     
@@ -85,9 +108,17 @@ class GameProgressViewController: UIViewController {
         getStackView()
         layoutViews()
         winningAmount = getWinningAmount(currentQuestion: currentQuestion)
+        messageLabel.text = """
+Игра окончена!
+Твой выигрыш \(winningAmount) руб!
+"""
     }
     
     @objc private func nextQuestionButtonPressed() {
+        dismiss(animated: true)
+    }
+    
+    @objc private func newGameButtonPressed() {
         dismiss(animated: true)
     }
     
@@ -101,11 +132,17 @@ class GameProgressViewController: UIViewController {
     }
     
     private func getWinningAmount(currentQuestion: Int) -> Int {
-        var summ = 0
-        for i in 0...currentQuestion - 1 {
-            summ += prizeTable[14 - i].winningSumm
+        switch answerStatus {
+        case .right:
+            return prizeTable[15 - currentQuestion].winningSumm
+        case .wrong:
+            switch currentQuestion {
+            case ..<5: return 0
+            case 5..<10: return 1000
+            case 10...15: return 32000
+            default: return 1000000
+            }
         }
-        return summ
     }
 }
 
@@ -113,46 +150,96 @@ private extension GameProgressViewController {
     
     func addViews() {
         view.addSubview(millionaireImage)
-        view.addSubview(nextQuestinButton)
-        view.addSubview(takeMoneyButton)
         view.addSubview(progressImageStackView)
-        
+    
+        switch answerStatus {
+        case .right:
+            view.addSubview(nextQuestinButton)
+            view.addSubview(takeMoneyButton)
+        case .wrong:
+            view.addSubview(newGameButton)
+            view.addSubview(messageLabel)
+        }
     }
     
     func layoutViews() {
-        millionaireImage.translatesAutoresizingMaskIntoConstraints = false
-        nextQuestinButton.translatesAutoresizingMaskIntoConstraints = false
-        takeMoneyButton.translatesAutoresizingMaskIntoConstraints = false
-        progressImageStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            takeMoneyButton.heightAnchor.constraint(equalToConstant: 40),
-            takeMoneyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-            takeMoneyButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+        switch answerStatus {
             
-            nextQuestinButton.heightAnchor.constraint(equalToConstant: 40),
-            nextQuestinButton.leadingAnchor.constraint(equalTo: takeMoneyButton.trailingAnchor, constant: 20),
-            nextQuestinButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            nextQuestinButton.bottomAnchor.constraint(equalTo: takeMoneyButton.bottomAnchor),
-            nextQuestinButton.widthAnchor.constraint(equalTo: takeMoneyButton.widthAnchor),
+        case .right:
+            millionaireImage.translatesAutoresizingMaskIntoConstraints = false
+            nextQuestinButton.translatesAutoresizingMaskIntoConstraints = false
+            takeMoneyButton.translatesAutoresizingMaskIntoConstraints = false
+            progressImageStackView.translatesAutoresizingMaskIntoConstraints = false
             
-            millionaireImage.heightAnchor.constraint(equalToConstant: 100),
-            millionaireImage.widthAnchor.constraint(equalToConstant: 100),
-            millionaireImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
-            millionaireImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            NSLayoutConstraint.activate([
+                takeMoneyButton.heightAnchor.constraint(equalToConstant: 40),
+                takeMoneyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+                takeMoneyButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+                
+                nextQuestinButton.heightAnchor.constraint(equalToConstant: 40),
+                nextQuestinButton.leadingAnchor.constraint(equalTo: takeMoneyButton.trailingAnchor, constant: 20),
+                nextQuestinButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+                nextQuestinButton.bottomAnchor.constraint(equalTo: takeMoneyButton.bottomAnchor),
+                nextQuestinButton.widthAnchor.constraint(equalTo: takeMoneyButton.widthAnchor),
+                
+                millionaireImage.heightAnchor.constraint(equalToConstant: 100),
+                millionaireImage.widthAnchor.constraint(equalToConstant: 100),
+                millionaireImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
+                millionaireImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                
+                progressImageStackView.topAnchor.constraint(equalTo: millionaireImage.bottomAnchor, constant: 15),
+                progressImageStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+                progressImageStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+                progressImageStackView.bottomAnchor.constraint(equalTo: nextQuestinButton.topAnchor, constant: -20)
+            ])
+        case .wrong:
+            millionaireImage.translatesAutoresizingMaskIntoConstraints = false
+            newGameButton.translatesAutoresizingMaskIntoConstraints = false
+            progressImageStackView.translatesAutoresizingMaskIntoConstraints = false
+            messageLabel.translatesAutoresizingMaskIntoConstraints = false
             
-            progressImageStackView.topAnchor.constraint(equalTo: millionaireImage.bottomAnchor, constant: 15),
-            progressImageStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-            progressImageStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            progressImageStackView.bottomAnchor.constraint(equalTo: nextQuestinButton.topAnchor, constant: -20)
-        ])
+            NSLayoutConstraint.activate([
+                newGameButton.heightAnchor.constraint(equalToConstant: 40),
+                newGameButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+                newGameButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+                newGameButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+                newGameButton.topAnchor.constraint(equalTo: progressImageStackView.bottomAnchor, constant: -10),
+                
+                millionaireImage.heightAnchor.constraint(equalToConstant: 100),
+                millionaireImage.widthAnchor.constraint(equalToConstant: 100),
+                millionaireImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
+                millionaireImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                
+                progressImageStackView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 8),
+                progressImageStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+                progressImageStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+                progressImageStackView.bottomAnchor.constraint(equalTo: newGameButton.topAnchor, constant: -20),
+                
+                messageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+                messageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+                messageLabel.topAnchor.constraint(equalTo: millionaireImage.bottomAnchor, constant: 8),
+                messageLabel.heightAnchor.constraint(equalToConstant: 60)
+                
+            ])
+        }
+       
     }
     
     private func getStackView() {
         for prize in prizeTable {
-            if prize.qwestionNumber <= currentQuestion {
+            if prize.qwestionNumber < currentQuestion {
                 let questionImage = ProgressImage(questionNumber: "Вопрос \(prize.qwestionNumber)", winningSumm: "\(prize.winningSumm) RUB", colorImage: .green)
                 progressImageStackView.addArrangedSubview(questionImage)
+            } else if prize.qwestionNumber == currentQuestion {
+                switch answerStatus {
+                case .right:
+                    let questionImage = ProgressImage(questionNumber: "Вопрос \(prize.qwestionNumber)", winningSumm: "\(prize.winningSumm) RUB", colorImage: .green)
+                    progressImageStackView.addArrangedSubview(questionImage)
+                case .wrong:
+                    let questionImage = ProgressImage(questionNumber: "Вопрос \(prize.qwestionNumber)", winningSumm: "\(prize.winningSumm) RUB", colorImage: .red)
+                    progressImageStackView.addArrangedSubview(questionImage)
+                }
             } else {
                 let questionImage = ProgressImage(questionNumber: "Вопрос \(prize.qwestionNumber)", winningSumm: "\(prize.winningSumm) RUB", colorImage: prize.color)
                 progressImageStackView.addArrangedSubview(questionImage)
