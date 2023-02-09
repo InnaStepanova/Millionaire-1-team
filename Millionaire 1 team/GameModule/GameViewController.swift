@@ -14,20 +14,12 @@ protocol GameViewControllerDelegate {
 }
 
 final class GameViewController: UIViewController {
-        
-    enum SoundType: String {
-        case chosenAnswer, win, lose, winGame, timerForResponse
-    }
     
     enum HintType: String, CaseIterable {
         case fiftyOnFifty
         case friendCall
         case everyoneHelp
     }
-    
-    private let hints = ["fiftyOnFifty": "forbiddenFiftyOnFifty",
-                 "friendCall": "forbiddenFriendCall",
-                 "everyoneHelp": "forbiddenEveryoneHelp"]
     
     private enum Constants {
         static let winTimeInterval: TimeInterval = 3.5
@@ -42,10 +34,6 @@ final class GameViewController: UIViewController {
     
     private let questions = Question.getQuestions()
     
-    private var levelsCounter = 1
-    
-    private var player: AVAudioPlayer?
-    
     private var timer = Timer()
     
     private let gameManager = GameManager()
@@ -57,7 +45,7 @@ final class GameViewController: UIViewController {
             if isGameOver {
                 guard let price = currentQuestion?.getPrice() else { return }
                 timer.invalidate()
-                let vc = GameOverViewController(title: "You are lose.", score: price)
+                let vc = GameOverViewController(score: price)
                 vc.delegate = self
                 present(vc, animated: true)
 
@@ -70,7 +58,6 @@ final class GameViewController: UIViewController {
                 currentQuestion = gameManager.getCurrentQuestion()
                 setupUI()
                 updateUI(with: gameManager.levelsCounter)
-
             }
         }
     }
@@ -123,7 +110,7 @@ final class GameViewController: UIViewController {
     private func isRight(userAnswer: String, correctAnswer: String) -> Bool {
         timer.invalidate()
         if userAnswer == correctAnswer {
-            playSound(type: .win)
+            gameManager.playSound(type: .win)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + Constants.winTimeInterval) { [weak self] in
                 guard let self = self else { return }
@@ -135,7 +122,7 @@ final class GameViewController: UIViewController {
             return true
             
         } else {
-            playSound(type: .lose)
+            gameManager.playSound(type: .lose)
             isGameOver = true
             return false
         }
@@ -148,7 +135,7 @@ final class GameViewController: UIViewController {
         
         guard let currentQuestion = currentQuestion else {
             timer.invalidate()
-            playSound(type: .winGame)
+            gameManager.playSound(type: .winGame)
             return
         }
         
@@ -159,7 +146,7 @@ final class GameViewController: UIViewController {
         configureAnswersStackView(with: currentQuestion.getAllAnswers(),
                                   currentQuestion.correctAnswer)
         
-        playSound(type: .timerForResponse)
+        gameManager.playSound(type: .timerForResponse)
         timerForResponse()
     }
     
@@ -174,24 +161,6 @@ final class GameViewController: UIViewController {
         hintsStackView.arrangedSubviews.forEach {
             hintsStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
-        }
-    }
-    
-    private func playSound(type: SoundType) {
-        
-        guard let url = Bundle.main.url(forResource: type.rawValue, withExtension: "mp3") else { return }
-        
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-            try AVAudioSession.sharedInstance().setActive(true)
-            
-            player = try AVAudioPlayer(contentsOf: url)
-            
-            if let player = player {
-                player.play()
-            }
-        } catch let error {
-            print(error.localizedDescription)
         }
     }
     
@@ -247,7 +216,7 @@ final class GameViewController: UIViewController {
                 self.progressBar.progress = 1 - time/30
             } else {
                 self.timer.invalidate()
-                self.playSound(type: .lose)
+                self.gameManager.playSound(type: .lose)
                 self.isGameOver = true
             }
         })
@@ -355,7 +324,7 @@ extension GameViewController: GameOverViewControllerDelegate {
 extension GameViewController: AnswerViewDelegate {
     func answerButtonTapped(with userAnswer: String, answerView: AnswerView) {
         answerView.updateGradientChosenAnswer()
-        playSound(type: .chosenAnswer)
+        gameManager.playSound(type: .chosenAnswer)
         answersStackView.isUserInteractionEnabled = false
         hintsStackView.isUserInteractionEnabled = false
         hintsStackView.alpha = 0.5
@@ -366,7 +335,6 @@ extension GameViewController: AnswerViewDelegate {
                   let correct = self.currentQuestion?.correctAnswer else { return }
             let isRight = self.isRight(userAnswer: userAnswer, correctAnswer: correct)
             answerView.updateGradient(with: isRight)
-            
         }
     }
 }
