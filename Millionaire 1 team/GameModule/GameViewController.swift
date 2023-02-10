@@ -53,6 +53,7 @@ final class GameViewController: UIViewController {
                 cleanHints()
                 configureHintsStackView()
                 self.answersStackView.isUserInteractionEnabled = true
+                hintView = EveryoneHelpHintView()
                 gameManager.levelsCounter = 1
                 currentQuestion = gameManager.getCurrentQuestion()
                 setupUI()
