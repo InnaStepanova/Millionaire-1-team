@@ -117,10 +117,14 @@ final class GameViewController: UIViewController {
         if userAnswer == correctAnswer {
             gameManager.playSound(type: .win)
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.winTimeInterval) { [weak self] in
-                guard let self = self else { return }
-                self.cleanAnswers()
-                self.updateUI(with: self.gameManager.levelsCounter)
+            guard let currentQuestion = currentQuestion else { return  true}
+            let level = currentQuestion.level
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.winTimeInterval) {
+                let vc = GameProgressViewController(currentQuestion: level, answerStatus: .right)
+                vc.modalPresentationStyle = .fullScreen
+                vc.delegate = self
+                self.present(vc, animated: true)
                 self.answersStackView.isUserInteractionEnabled = true
             }
             gameManager.levelsCounter += 1
@@ -135,20 +139,11 @@ final class GameViewController: UIViewController {
     
     private func showGameProcess() {
         guard let currentQuestion = currentQuestion else { return }
-        let level = currentQuestion.level - 1
-        let price = currentQuestion.getPrice(with: currentQuestion.level - 1)
-        if level == 0 {
-            let vc = GameOverViewController()
-            vc.modalPresentationStyle = .fullScreen
-            vc.delegate = self
-            present(vc, animated: true)
-        } else {
-            let vc = GameProgressViewController(currentQuestion: level,
-                                                winningAmount: price)
+        let level = currentQuestion.level
+        let vc = GameProgressViewController(currentQuestion: level, answerStatus: .wrong)
             vc.delegate = self
             vc.modalPresentationStyle = .fullScreen
             present(vc, animated: true)
-        }
     }
     
     private func updateUI(with questionLevel: Int) {
@@ -391,5 +386,10 @@ extension GameViewController: AnswerViewDelegate {
 extension GameViewController: GameProgressViewControllerDelegate {
     func restartGame() {
         isGameOver = false
+    }
+    func continueGame() {
+        cleanAnswers()
+        updateUI(with: self.gameManager.levelsCounter)
+        answersStackView.isUserInteractionEnabled = true
     }
 }
