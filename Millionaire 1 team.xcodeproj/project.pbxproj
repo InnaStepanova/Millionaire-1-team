@@ -32,6 +32,8 @@
 		658902AA2993CD0000C29D26 /* lose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 658902A52993CD0000C29D26 /* lose.mp3 */; };
 		658902AB2993CD0000C29D26 /* winGame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 658902A62993CD0000C29D26 /* winGame.mp3 */; };
 		658902AC2993CD0000C29D26 /* backgroundSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 658902A72993CD0000C29D26 /* backgroundSound.mp3 */; };
+		65ABDFE1299571A000C4DCC7 /* EveryoneHelpHintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ABDFE0299571A000C4DCC7 /* EveryoneHelpHintView.swift */; };
+		65ABDFE52996374C00C4DCC7 /* Int+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ABDFE42996374C00C4DCC7 /* Int+extensions.swift */; };
 		A35B562C29919312001BF726 /* CongratulationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35B562B29919312001BF726 /* CongratulationVC.swift */; };
 		A800F8CB299245560035FD0B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A800F8CA299245560035FD0B /* MainViewController.swift */; };
 /* End PBXBuildFile section */
@@ -64,6 +66,8 @@
 		658902A52993CD0000C29D26 /* lose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lose.mp3; sourceTree = "<group>"; };
 		658902A62993CD0000C29D26 /* winGame.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = winGame.mp3; sourceTree = "<group>"; };
 		658902A72993CD0000C29D26 /* backgroundSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundSound.mp3; sourceTree = "<group>"; };
+		65ABDFE0299571A000C4DCC7 /* EveryoneHelpHintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EveryoneHelpHintView.swift; sourceTree = "<group>"; };
+		65ABDFE42996374C00C4DCC7 /* Int+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+extensions.swift"; sourceTree = "<group>"; };
 		A35B562B29919312001BF726 /* CongratulationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongratulationVC.swift; sourceTree = "<group>"; };
 		A800F8CA299245560035FD0B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,6 +131,7 @@
 			children = (
 				65447B5429912DB900EE1DBD /* QuestionView.swift */,
 				65447B5529912DB900EE1DBD /* AnswerView.swift */,
+				65ABDFE0299571A000C4DCC7 /* EveryoneHelpHintView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -135,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				65447B5129912CDE00EE1DBD /* UIView+extensions.swift */,
+				65ABDFE42996374C00C4DCC7 /* Int+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -255,6 +261,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65ABDFE1299571A000C4DCC7 /* EveryoneHelpHintView.swift in Sources */,
+				65ABDFE52996374C00C4DCC7 /* Int+extensions.swift in Sources */,
 				0284EA702993BF99008137BB /* AppDelegate.swift in Sources */,
 				655C34212994C9C100556EDB /* GameManager.swift in Sources */,
 				2842FA44299112570042235F /* RulesViewController.swift in Sources */,

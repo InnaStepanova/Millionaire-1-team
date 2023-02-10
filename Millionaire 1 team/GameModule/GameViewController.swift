@@ -64,7 +64,7 @@ final class GameViewController: UIViewController {
     private let backgroundImageView = UIImageView(image: Resourses.Images.bacgroundImage)
     
     private let questionView = QuestionView()
-    
+        
     private let progressBar: UIProgressView = {
         let progress = UIProgressView()
         return progress
@@ -86,11 +86,19 @@ final class GameViewController: UIViewController {
         return stackView
     }()
     
+    private var hintView = EveryoneHelpHintView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI(with: gameManager.levelsCounter)
         configureHintsStackView()
         setupUI()
+    }
+    
+    private func showCustomHint(with percents: [String: Int]) {
+        hintView.configure(with: percents)
+        hintView.showCustomAlert(for: view)
+        view.addSubview(hintView)
     }
     
     private func configureAnswersStackView(with answers: [String], _ correct: String) {
@@ -259,19 +267,21 @@ final class GameViewController: UIViewController {
     }
     
     private func everyoneHelp() {
-        guard let currentQuestion = currentQuestion else { return }
-        if Int.random(in: 1...10) <= 7 {
-            let alert = UIAlertController(title: "Everyone help", message: currentQuestion.correctAnswer, preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(action)
-            present(alert, animated: true)
-        } else {
-            print(currentQuestion)
-            let alert = UIAlertController(title: "Everyone help", message: currentQuestion.wrongAnswers[Int.random(in: 0...currentQuestion.wrongAnswers.count - 1)], preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(action)
-            present(alert, animated: true)
+        guard let currentQuestion = currentQuestion,
+        let answersViews = answersStackView.arrangedSubviews as? [AnswerView] else { return }
+        
+        var index = 0
+        var result = [String: Int]()
+        
+        for answersView in answersViews {
+            if answersView.title == currentQuestion.correctAnswer {
+                result[gameManager.optionsLetters[index]] = Int.random(in: 70...100)
+            } else {
+                result[gameManager.optionsLetters[index]] = Int.random(in: 0...69)
+            }
+            index += 1
         }
+        showCustomHint(with: result)
     }
     
     private func friendCall() {
