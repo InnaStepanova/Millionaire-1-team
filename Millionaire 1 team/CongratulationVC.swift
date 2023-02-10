@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol CongratulationVCDelegate: AnyObject {
+    func restartFromCongrats(dismiss: Void)
+}
+
 class CongratulationVC : UIViewController {
+    
+    weak var delegate: CongratulationVCDelegate?
     
     let backgroundView: UIImageView = {
             let myView = UIImageView()
@@ -83,9 +89,13 @@ class CongratulationVC : UIViewController {
     
     func changeAmount(_ amount: String) {
         congratulationLabel.text = "Поздравляю, вы выиграли\n\(amount) рублей!"
+        
     }
     
     @objc private func newGameButtonPressed() {
-        dismiss(animated: true)
+            self.delegate?.restartFromCongrats(dismiss: self.dismiss(animated: false))
+            self.dismiss(animated: false)
+            
+        
     }
 }

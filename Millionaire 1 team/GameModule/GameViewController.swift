@@ -145,6 +145,7 @@ final class GameViewController: UIViewController {
         } else {
             let vc = GameProgressViewController(currentQuestion: level,
                                                 winningAmount: price)
+            vc.delegate = self
             vc.modalPresentationStyle = .fullScreen
             present(vc, animated: true)
         }
@@ -384,5 +385,11 @@ extension GameViewController: AnswerViewDelegate {
             let isRight = self.isRight(userAnswer: userAnswer, correctAnswer: correct)
             answerView.updateGradient(with: isRight)
         }
+    }
+}
+
+extension GameViewController: GameProgressViewControllerDelegate {
+    func restartGame() {
+        isGameOver = false
     }
 }

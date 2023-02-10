@@ -38,7 +38,14 @@ enum AnswerStatus {
     case right
     case wrong
 }
+
+protocol GameProgressViewControllerDelegate: AnyObject {
+    func restartGame()
+}
+
 class GameProgressViewController: UIViewController {
+    
+    weak var delegate: GameProgressViewControllerDelegate?
     
     var currentQuestion = 1
     var winningAmount = 0
@@ -142,9 +149,12 @@ class GameProgressViewController: UIViewController {
     @objc private func takeMoneyButtonPressed() {
 
         let congratulationVC = CongratulationVC()
+        congratulationVC.delegate = self
         congratulationVC.changeAmount("\(winningAmount)")
         congratulationVC.modalPresentationStyle = .fullScreen
-        present(congratulationVC, animated: true)
+        present(congratulationVC, animated: true) {
+            
+        }
         
     }
     
@@ -262,5 +272,14 @@ private extension GameProgressViewController {
                 progressImageStackView.addArrangedSubview(questionImage)
             }
         }
+    }
+}
+
+extension GameProgressViewController: CongratulationVCDelegate {
+    
+    func restartFromCongrats(dismiss: Void) {
+        delegate?.restartGame()
+        self.dismiss(animated: true)
+        dismiss
     }
 }
