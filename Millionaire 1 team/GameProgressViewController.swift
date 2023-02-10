@@ -41,6 +41,7 @@ enum AnswerStatus {
 
 protocol GameProgressViewControllerDelegate: AnyObject {
     func restartGame()
+    func continueGame()
 }
 
 class GameProgressViewController: UIViewController {
@@ -50,7 +51,7 @@ class GameProgressViewController: UIViewController {
     var currentQuestion = 1
     var winningAmount = 0
     
-    private lazy var answerStatus: AnswerStatus = .right
+    var answerStatus: AnswerStatus = .right
     
     private var prizeTable = PrizeTable.getPrizeTable()
     
@@ -111,9 +112,9 @@ class GameProgressViewController: UIViewController {
     }()
     
     init(currentQuestion: Int = 1,
-         winningAmount: Int = 0) {
+         answerStatus: AnswerStatus = .right) {
         self.currentQuestion = currentQuestion
-        self.winningAmount = winningAmount
+        self.answerStatus = answerStatus
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -132,17 +133,28 @@ class GameProgressViewController: UIViewController {
         getStackView()
         layoutViews()
         winningAmount = getWinningAmount(currentQuestion: currentQuestion)
-        messageLabel.text = """
-Игра окончена!
+        
+        if answerStatus == .right {
+            messageLabel.text =
+"""
 Твой выигрыш \(winningAmount) руб!
 """
+        } else {
+            messageLabel.text =
+"""
+ИГРА ОКОНЧЕНА!
+Твой выигрыш \(winningAmount) руб!
+"""
+        }
     }
     
     @objc private func nextQuestionButtonPressed() {
+        delegate?.continueGame()
         dismiss(animated: true)
     }
     
     @objc private func newGameButtonPressed() {
+        delegate?.restartGame()
         dismiss(animated: true)
     }
     
@@ -178,6 +190,7 @@ private extension GameProgressViewController {
     func addViews() {
         view.addSubview(millionaireImage)
         view.addSubview(progressImageStackView)
+        view.addSubview(messageLabel)
     
         switch answerStatus {
         case .right:
@@ -185,72 +198,59 @@ private extension GameProgressViewController {
             view.addSubview(takeMoneyButton)
         case .wrong:
             view.addSubview(newGameButton)
-            view.addSubview(messageLabel)
         }
     }
     
     func layoutViews() {
+        millionaireImage.translatesAutoresizingMaskIntoConstraints = false
+        progressImageStackView.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            millionaireImage.heightAnchor.constraint(equalToConstant: 100),
+            millionaireImage.widthAnchor.constraint(equalToConstant: 100),
+            millionaireImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
+            millionaireImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            progressImageStackView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 8),
+            progressImageStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            progressImageStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+
+            messageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            messageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            messageLabel.topAnchor.constraint(equalTo: millionaireImage.bottomAnchor, constant: 8),
+            messageLabel.heightAnchor.constraint(equalToConstant: 60)
+            
+        ])
         
         switch answerStatus {
-            
         case .right:
-            millionaireImage.translatesAutoresizingMaskIntoConstraints = false
-            nextQuestinButton.translatesAutoresizingMaskIntoConstraints = false
             takeMoneyButton.translatesAutoresizingMaskIntoConstraints = false
-            progressImageStackView.translatesAutoresizingMaskIntoConstraints = false
+            nextQuestinButton.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
                 takeMoneyButton.heightAnchor.constraint(equalToConstant: 40),
                 takeMoneyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
                 takeMoneyButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+                takeMoneyButton.topAnchor.constraint(equalTo: progressImageStackView.bottomAnchor, constant: 20),
                 
                 nextQuestinButton.heightAnchor.constraint(equalToConstant: 40),
                 nextQuestinButton.leadingAnchor.constraint(equalTo: takeMoneyButton.trailingAnchor, constant: 20),
                 nextQuestinButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
                 nextQuestinButton.bottomAnchor.constraint(equalTo: takeMoneyButton.bottomAnchor),
                 nextQuestinButton.widthAnchor.constraint(equalTo: takeMoneyButton.widthAnchor),
-                
-                millionaireImage.heightAnchor.constraint(equalToConstant: 100),
-                millionaireImage.widthAnchor.constraint(equalToConstant: 100),
-                millionaireImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
-                millionaireImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                
-                progressImageStackView.topAnchor.constraint(equalTo: millionaireImage.bottomAnchor, constant: 15),
-                progressImageStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-                progressImageStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-                progressImageStackView.bottomAnchor.constraint(equalTo: nextQuestinButton.topAnchor, constant: -20)
             ])
         case .wrong:
-            millionaireImage.translatesAutoresizingMaskIntoConstraints = false
             newGameButton.translatesAutoresizingMaskIntoConstraints = false
-            progressImageStackView.translatesAutoresizingMaskIntoConstraints = false
-            messageLabel.translatesAutoresizingMaskIntoConstraints = false
-            
+    
             NSLayoutConstraint.activate([
                 newGameButton.heightAnchor.constraint(equalToConstant: 40),
                 newGameButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
                 newGameButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
                 newGameButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
-                newGameButton.topAnchor.constraint(equalTo: progressImageStackView.bottomAnchor, constant: -10),
-                
-                millionaireImage.heightAnchor.constraint(equalToConstant: 100),
-                millionaireImage.widthAnchor.constraint(equalToConstant: 100),
-                millionaireImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
-                millionaireImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                
-                progressImageStackView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 8),
-                progressImageStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-                progressImageStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-                progressImageStackView.bottomAnchor.constraint(equalTo: newGameButton.topAnchor, constant: -20),
-                
-                messageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-                messageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-                messageLabel.topAnchor.constraint(equalTo: millionaireImage.bottomAnchor, constant: 8),
-                messageLabel.heightAnchor.constraint(equalToConstant: 60)
-                
+                newGameButton.topAnchor.constraint(equalTo: progressImageStackView.bottomAnchor, constant: 20),
             ])
         }
-       
     }
     
     private func getStackView() {
