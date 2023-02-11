@@ -34,6 +34,8 @@ final class GameViewController: UIViewController {
         static let questionViewHeight: CGFloat = 150
     }
     
+    private var isRightToMistake = false
+    
     private let questions = Question.getQuestions()
     
     private var timer = Timer()
@@ -46,7 +48,7 @@ final class GameViewController: UIViewController {
     private var isGameOver: Bool = false {
         didSet {
             if isGameOver {
-                showGameProcess()
+                showGameProcess(answerStatus: .wrong)
                 timer.invalidate()
             } else {
                 cleanAnswers()
@@ -114,33 +116,43 @@ final class GameViewController: UIViewController {
     
     private func isRight(userAnswer: String, correctAnswer: String) -> Bool {
         timer.invalidate()
+        
         if userAnswer == correctAnswer {
             gameManager.playSound(type: .win)
-            
-            guard let currentQuestion = currentQuestion else { return  true}
-            let level = currentQuestion.level
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + Constants.winTimeInterval) {
-                let vc = GameProgressViewController(currentQuestion: level, answerStatus: .right)
-                vc.modalPresentationStyle = .fullScreen
-                vc.delegate = self
-                self.present(vc, animated: true)
+                self.showGameProcess(answerStatus: .right)
                 self.answersStackView.isUserInteractionEnabled = true
             }
             gameManager.levelsCounter += 1
             return true
             
         } else {
+            
+            if isRightToMistake {
+                isRightToMistake = false
+                guard let answersViews = answersStackView.arrangedSubviews as? [AnswerView] else { return false }
+                answersViews.forEach {
+                    if $0.title == currentQuestion?.correctAnswer {
+                        $0.updateGradient(with: true)
+                    }
+                }
+                gameManager.playSound(type: .win)
+                DispatchQueue.main.asyncAfter(deadline: .now() + Constants.winTimeInterval) {
+                    self.showGameProcess(answerStatus: .right)
+                }
+                gameManager.levelsCounter += 1
+                return false
+            }
             gameManager.playSound(type: .lose)
             delayGameOver()
             return false
         }
     }
     
-    private func showGameProcess() {
+    private func showGameProcess(answerStatus: AnswerStatus) {
         guard let currentQuestion = currentQuestion else { return }
         let level = currentQuestion.level
-        let vc = GameProgressViewController(currentQuestion: level, answerStatus: .wrong)
+        let vc = GameProgressViewController(currentQuestion: level, answerStatus: answerStatus)
             vc.delegate = self
             vc.modalPresentationStyle = .fullScreen
             present(vc, animated: true)
@@ -154,7 +166,7 @@ final class GameViewController: UIViewController {
         
         guard let currentQuestion = currentQuestion else {
             timer.invalidate()
-            showGameProcess()
+            showGameProcess(answerStatus: .right)
             gameManager.playSound(type: .winGame)
             return
         }
@@ -197,7 +209,7 @@ final class GameViewController: UIViewController {
             !sender.isSelected ? everyoneHelp() : print("Hint used already")
             
         case "makeMistake":
-            !sender.isSelected ? print(#function) : print("Hint used already")
+            !sender.isSelected ? rightToMistake() : print("Hint used already")
             
         default:
             break
@@ -261,6 +273,10 @@ final class GameViewController: UIViewController {
         Timer.scheduledTimer(withTimeInterval: Constants.gameOverRightAnswerTime, repeats: false) { _ in
             self.isGameOver = true
         }
+    }
+    
+    private func rightToMistake() {
+        isRightToMistake = true
     }
     
     private func everyoneHelp() {
