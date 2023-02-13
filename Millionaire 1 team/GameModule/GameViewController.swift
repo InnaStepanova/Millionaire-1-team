@@ -138,6 +138,7 @@ final class GameViewController: UIViewController {
                 }
                 gameManager.playSound(type: .win)
                 DispatchQueue.main.asyncAfter(deadline: .now() + Constants.winTimeInterval) {
+                    self.isRightToMistake = false
                     self.showGameProcess(answerStatus: .right)
                 }
                 gameManager.levelsCounter += 1
